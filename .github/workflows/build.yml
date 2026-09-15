@@ -1,0 +1,46 @@
+name: BEEGO Android Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get source
+        uses: actions/checkout@v4
+
+      - name: Unpack BEEGO project
+        run: unzip -o BEEGO_Android_GitHub_Build.zip
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+
+      - name: Build APK
+        working-directory: BEEGOPlay
+        run: gradle :app:assembleDebug
+
+      - name: Build AAB
+        working-directory: BEEGOPlay
+        run: gradle :app:bundleRelease
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: BEEGO-APK
+          path: BEEGOPlay/app/build/outputs/apk/debug/*.apk
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: BEEGO-AAB
+          path: BEEGOPlay/app/build/outputs/bundle/release/*.aab
