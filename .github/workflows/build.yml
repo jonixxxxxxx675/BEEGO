@@ -13,7 +13,7 @@ jobs:
 
       - name: Unpack BEEGO project
         run: unzip -o BEEGO_V2_TEMPLATE_ANDROID.zip      
-        - name: Fix WebView Android 16
+      - name: Fix WebView Android 16
         working-directory: BEEGOPlay
         run: |
           sed -i '/webView = WebView(this).apply {/a\            setLayerType(View.LAYER_TYPE_SOFTWARE, null)' app/src/main/java/com/beego/app/MainActivity.kt
