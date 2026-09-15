@@ -12,7 +12,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Unpack BEEGO project
-      run: unzip -o BEEGO_V2_TEMPLATE_ANDROID.zip
+        run: unzip -o BEEGO_V2_TEMPLATE_ANDROID.zip
+      
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
