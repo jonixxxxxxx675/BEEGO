@@ -14,61 +14,6 @@ jobs:
       - name: Unpack BEEGO project
         run: unzip -o BEEGO_V2_TEMPLATE_ANDROID.zip
 
-      - name: Create clean Android startup test
-        working-directory: BEEGOPlay
-        run: |
-          cat > app/src/main/java/com/beego/app/MainActivity.kt <<'EOF'
-          package com.beego.app
-
-          import android.app.Activity
-          import android.graphics.Color
-          import android.os.Bundle
-          import android.view.Gravity
-          import android.widget.TextView
-
-          class MainActivity : Activity() {
-
-              override fun onCreate(savedInstanceState: Bundle?) {
-                  super.onCreate(savedInstanceState)
-
-                  val screen = TextView(this)
-                  screen.text = "BEEGO\n\nAndroid startup OK"
-                  screen.textSize = 28f
-                  screen.setTextColor(Color.WHITE)
-                  screen.setBackgroundColor(Color.BLACK)
-                  screen.gravity = Gravity.CENTER
-
-                  setContentView(screen)
-              }
-          }
-          EOF
-
-          cat > app/src/main/AndroidManifest.xml <<'EOF'
-          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-              <application
-                  android:theme="@android:style/Theme.Material.NoActionBar"
-                  android:label="BEEGO — Food Delivery by Air"
-                  android:allowBackup="false"
-                  android:supportsRtl="true">
-
-                  <activity
-                      android:name=".MainActivity"
-                      android:exported="true"
-                      android:screenOrientation="portrait">
-
-                      <intent-filter>
-                          <action android:name="android.intent.action.MAIN" />
-                          <category android:name="android.intent.category.LAUNCHER" />
-                      </intent-filter>
-
-                  </activity>
-
-              </application>
-
-          </manifest>
-          EOF
-
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -87,5 +32,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: BEEGO-CLEAN-TEST
+          name: BEEGO-V2-DESIGN
           path: BEEGOPlay/app/build/outputs/apk/debug/*.apk
