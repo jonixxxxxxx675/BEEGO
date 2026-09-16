@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Unpack BEEGO Native project
-        run: unzip -o BEEGO_FINAL_56_PRODUCT_DETAILS.zip
+        run: unzip -o BEEGO_FINAL_57_ADDON_PRICES_RIGHT.zip
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
