@@ -1,4 +1,4 @@
-name: BEEGO Android Build
+_name: BEEGO Android Build
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Unpack BEEGO Native project
-        run: unzip -o BEEGO FINAL 50 SPLASH HOME COMBINED.zip
+        run: unzip -o BEEGO_FINAL_50_SPLASH_HOME_COMBINED.zip
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
