@@ -14,143 +14,34 @@ jobs:
       - name: Unpack BEEGO project
         run: unzip -o BEEGO_V2_TEMPLATE_ANDROID.zip
 
-      - name: Fix BEEGO for Android 16
+      - name: Create startup test
         working-directory: BEEGOPlay
         run: |
           cat > app/src/main/java/com/beego/app/MainActivity.kt <<'EOF'
           package com.beego.app
 
-          import android.annotation.SuppressLint
           import android.app.Activity
           import android.graphics.Color
-          import android.os.Build
           import android.os.Bundle
-          import android.view.View
-          import android.view.WindowInsets
-          import android.view.WindowInsetsController
-          import android.webkit.RenderProcessGoneDetail
-          import android.webkit.WebChromeClient
-          import android.webkit.WebResourceRequest
-          import android.webkit.WebView
-          import android.webkit.WebViewClient
+          import android.view.Gravity
+          import android.widget.TextView
 
           class MainActivity : Activity() {
 
-              private lateinit var webView: WebView
-
-              @SuppressLint("SetJavaScriptEnabled")
               override fun onCreate(savedInstanceState: Bundle?) {
                   super.onCreate(savedInstanceState)
 
-                  window.statusBarColor = Color.BLACK
-                  window.navigationBarColor = Color.BLACK
-                  hideSystemBars()
+                  val screen = TextView(this)
+                  screen.text = "BEEGO\n\nAndroid startup OK"
+                  screen.textSize = 28f
+                  screen.setTextColor(Color.WHITE)
+                  screen.setBackgroundColor(Color.rgb(7, 9, 9))
+                  screen.gravity = Gravity.CENTER
 
-                  createWebView()
-              }
-
-              @SuppressLint("SetJavaScriptEnabled")
-              private fun createWebView() {
-                  webView = WebView(this)
-
-                  webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-                  webView.setBackgroundColor(Color.rgb(7, 9, 9))
-
-                  webView.settings.apply {
-                      javaScriptEnabled = true
-                      domStorageEnabled = true
-                      allowFileAccess = true
-                      allowContentAccess = false
-                      setSupportZoom(false)
-                      builtInZoomControls = false
-                      displayZoomControls = false
-                      mediaPlaybackRequiresUserGesture = true
-                  }
-
-                  webView.webViewClient = object : WebViewClient() {
-
-                      override fun shouldOverrideUrlLoading(
-                          view: WebView,
-                          request: WebResourceRequest
-                      ): Boolean {
-                          return false
-                      }
-
-                      override fun onRenderProcessGone(
-                          view: WebView,
-                          detail: RenderProcessGoneDetail
-                      ): Boolean {
-                          try {
-                              view.destroy()
-                          } catch (_: Exception) {
-                          }
-
-                          createWebView()
-                          return true
-                      }
-                  }
-
-                  webView.webChromeClient = WebChromeClient()
-                  webView.overScrollMode = View.OVER_SCROLL_NEVER
-
-                  setContentView(webView)
-                  webView.loadUrl("file:///android_asset/index.html")
-              }
-
-              private fun hideSystemBars() {
-                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                      window.insetsController?.let { controller ->
-                          controller.hide(
-                              WindowInsets.Type.statusBars() or
-                              WindowInsets.Type.navigationBars()
-                          )
-                          controller.systemBarsBehavior =
-                              WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-                      }
-                  } else {
-                      @Suppress("DEPRECATION")
-                      window.decorView.systemUiVisibility =
-                          View.SYSTEM_UI_FLAG_FULLSCREEN or
-                          View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-                          View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
-                          View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                          View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                          View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                  }
-              }
-
-              override fun onWindowFocusChanged(hasFocus: Boolean) {
-                  super.onWindowFocusChanged(hasFocus)
-
-                  if (hasFocus) {
-                      hideSystemBars()
-                  }
-              }
-
-              @Deprecated("Deprecated in Java")
-              override fun onBackPressed() {
-                  if (::webView.isInitialized && webView.canGoBack()) {
-                      webView.goBack()
-                  } else {
-                      super.onBackPressed()
-                  }
-              }
-
-              override fun onDestroy() {
-                  if (::webView.isInitialized) {
-                      try {
-                          webView.stopLoading()
-                          webView.destroy()
-                      } catch (_: Exception) {
-                      }
-                  }
-
-                  super.onDestroy()
+                  setContentView(screen)
               }
           }
           EOF
-
-          sed -i 's#<application#<application android:hardwareAccelerated="false"#' app/src/main/AndroidManifest.xml
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -167,18 +58,8 @@ jobs:
         working-directory: BEEGOPlay
         run: gradle :app:assembleDebug
 
-      - name: Build AAB
-        working-directory: BEEGOPlay
-        run: gradle :app:bundleRelease
-
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: BEEGO-APK
+          name: BEEGO-APK-TEST
           path: BEEGOPlay/app/build/outputs/apk/debug/*.apk
-
-      - name: Upload AAB
-        uses: actions/upload-artifact@v4
-        with:
-          name: BEEGO-AAB
-          path: BEEGOPlay/app/build/outputs/bundle/release/*.aab
