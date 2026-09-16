@@ -12,8 +12,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Unpack BEEGO Native project
-        run: unzip -o BEEGO_FINAL_47_3_HOME_BANNER_SMOOTH.zip
-
+        run: unzip -o BEEGO_FINAL_47_4_SPLASH_FIXED.zip
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
