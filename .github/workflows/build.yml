@@ -1,4 +1,4 @@
-lname: BEEGO Android Build
+name: BEEGO Android Build
 
 on:
   workflow_dispatch:
