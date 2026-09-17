@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Unpack BEEGO Native project
-        run: unzip -o BEEGO_FINAL_80_REAL_MAP_FIXED6_MAP_FIX.zip
+        run: unzip -o BEEGO_FINAL_80_REAL_MAP_FIXED7_MAP_TILES.zip
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
