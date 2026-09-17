@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Unpack BEEGO Native project
-        run: unzip -o BEEGO_FINAL_75_RELEASE_TEST.zip
+        run: unzip -o BEEGO_FINAL_76_HERO_IMAGE_PERFECT.zip
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
