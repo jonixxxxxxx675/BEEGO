@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Unpack BEEGO Native project
-        run: unzip -o BEEGO_FINAL_78_TRACKING_SMOOTH_SHARP_IMAGE.zip
+        run: unzip -o BEEGO_FINAL_79_TRACKING_HERO_SMOOT_H_FIXED.zip
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
