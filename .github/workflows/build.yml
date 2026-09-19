@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Unpack BEEGO Native project
-        run: unzip -o BEEGO_FINAL_513_PLUS_POSTER_3D_СТА.zip
+        run: unzip -o BEEGO_FINAL_513_PLUS_POSTER_3D_CTA.zip
       - name: Set up JDK 17
       
         uses: actions/setup-java@v4
